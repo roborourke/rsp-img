@@ -16,6 +16,12 @@ In the meantime however the desired behaviour (this is just my opinion btw) can 
 
 This will degrade gracefully in browsers that do not support web components as well, falling back to standard `src`, `srcset` and `sizes` behaviour.
 
+## Features
+
+- Progressive enhancement for standard `img` tags
+- Accounts for device pixel ratio
+- Uses `ResizeObserver` and `requestAnimationFrame` for optimal performance
+
 ## Usage
 
 Include the `rsp-img.js` file in your bundle or directly in your web page e.g.
