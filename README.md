@@ -32,17 +32,20 @@ Include the `rsp-img.js` file in your bundle or directly in your web page e.g.
 
 Then, simply add `is="rsp-img"` to your images:
 
-```
+```html
 <img
   is="rsp-img"
   width="800"
   height="600"
   src="https://example.com/image.jpg"
-  srcset="https://example.com/image.jpg?w=200 200w, https://example.com/image.jpg?w=400 400w, https://example.com/image.jpg?w=800 800w, https://example.com/image.jpg?w=1600 1600w"
+  srcset="https://example.com/image.jpg?w=200 200w, https://example.com/image.jpg?w=400 400w,
+    https://example.com/image.jpg?w=800 800w, https://example.com/image.jpg?w=1600 1600w"
 />
 ```
 
 The `sizes` attribute is not needed or factored in as this implementation is dependent on the size of the image as it is currently displayed rather than the viewport.
+
+The above example will display the `1600w` source by default on a 2x pixel ratio device, then if the image is sized down to 400px wide it will show the `800w` source, and so on.
 
 ### Further Optimisation
 
