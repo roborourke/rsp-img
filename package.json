@@ -1,0 +1,26 @@
+{
+  "name": "rsp-img",
+  "version": "1.0.0",
+  "description": "Progressive enhancement for web images to use srcset according to image display size",
+  "main": "rsp-img.min.js",
+  "scripts": {
+    "build": "npx uglify-js rsp-img.js -c -m -o rsp-img.min.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roborourke/rsp-img.git"
+  },
+  "keywords": [
+    "responsive",
+    "image",
+    "web",
+    "component"
+  ],
+  "author": "Robert O'Rourke",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/roborourke/rsp-img/issues"
+  },
+  "homepage": "https://github.com/roborourke/rsp-img#readme"
+}
