@@ -6,6 +6,10 @@ A web component that extends the img tag to use `srcset` according to the images
 
 Load this web component JS on a web page, then add the attribute `is="rsp-img"` to your `<img>` tags.
 
+## Demo
+
+https://gigantic-three-sparrow.glitch.me/
+
 ## What is this?
 
 Responsive images on the web are difficult, cumbersome, and widely misunderstood. What I think most of us would like is an image tag that uses the `srcset` attribute to determine the most appropriate available src based on the size the image is currently being displayed at.
@@ -18,6 +22,7 @@ This will degrade gracefully in browsers that do not support web components as w
 
 ## Features
 
+- Less than 1kb
 - Progressive enhancement for standard `img` tags
 - Accounts for device pixel ratio
 - Uses `ResizeObserver` and `requestAnimationFrame` for optimal performance
