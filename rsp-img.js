@@ -1,50 +1,61 @@
-class RSPImg extends HTMLImageElement {
-  constructor() {
-    super();
+const ri = node => {
+  if (!node.srcset && !node.dataset.srcset) {
+      return;
   }
 
-  connectedCallback() {
-    if (!this.srcset && !this.dataset.srcset) {
-      return;
-    }
+  const srcset = node.srcset || node.dataset.srcset;
+  node.srcset = '';
 
-    const srcset = this.srcset || this.dataset.srcset;
-    this.srcset = '';
-
-    // Make a list of srcs from largest to smallest.
-    const srcs = srcset.split(',').map(src => {
+  // Make a list of srcs from largest to smallest.
+  const srcs = srcset.split(',').map(src => {
       const [url = '', descriptor = ''] = src.trim().split(' ');
       let size = parseFloat(descriptor);
       if (descriptor?.indexOf('x')>=0) {
-        size = Math.floor((this.width || this.clientWidth || 1) * size);
+          size = Math.floor((node.width || node.clientWidth || 1) * size);
       }
       return {
-        url: url.trim(),
-        size,
+          url: url.trim(),
+          size,
       };
-    })
-    .sort((a,b) => a.size < b.size ? 1 : (a.size > b.size ? -1 : 0));
+  })
+  .sort((a,b) => a.size < b.size ? 1 : (a.size > b.size ? -1 : 0));
 
-    // Use the largest size as the default.
-    let currentSrc = srcs[0].url;
+  // Use the largest size as the default.
+  let currentSrc = srcs[0].url;
 
-    this.resizeObserver = new ResizeObserver((entries) => {
+  node.ri = new ResizeObserver((entries) => {
       requestAnimationFrame(() => {
-        for (const src of srcs) {
-          if (entries[0].devicePixelContentBoxSize[0].inlineSize <= src.size){
-            currentSrc = src.url;
+          for (const src of srcs) {
+              if (entries[0].contentRect.width * devicePixelRatio <= src.size){
+                  currentSrc = src.url;
+              }
           }
-        }
-        this.src = currentSrc;
+          node.src = currentSrc;
       });
-    });
+  });
 
-    this.resizeObserver.observe(this);
-  }
-
-  disconnectedCallback() {
-    this.resizeObserver && this.resizeObserver.disconnect();
-  }
+  node.ri.observe(node);
 }
 
-customElements.define('rsp-img', RSPImg, {extends:'img'});
+// Create a new instance of MutationObserver
+(new MutationObserver((mutationsList, observer) => {
+    // Iterate over the mutations
+    for (let mutation of mutationsList) {
+        // Check if nodes were added
+        if (mutation.type === 'childList') {
+            // Iterate over the added nodes
+            for (let node of mutation.addedNodes) {
+                // Check if the node is an <img> tag
+                if (node.nodeName === 'IMG' && !node.ri) {
+                    ri(node);
+                }
+            }
+            for (let node of mutation.removedNodes) {
+                if (node.nodeName === 'IMG' && node.ri) {
+                    node.ri.disconnect();
+                }
+            }
+        }
+    }
+})).observe(document.documentElement, { childList: true, subtree: true });
+document.querySelectorAll('img').forEach(ri);
